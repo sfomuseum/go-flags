@@ -20,7 +20,7 @@ func Parse(fs *flag.FlagSet) {
 	fs.Parse(args)
 }
 
-func SetFlagsFromEnvVars(fs *flag.FlagSet, prefix string) {
+func SetFlagsFromEnvVars(fs *flag.FlagSet, prefix string) error {
 
 	prefix = normalize(prefix)
 
@@ -39,6 +39,8 @@ func SetFlagsFromEnvVars(fs *flag.FlagSet, prefix string) {
 			fs.Set(name, val)
 		}
 	})
+
+	return nil
 }
 
 func NewFlagSet(name string) *flag.FlagSet {
