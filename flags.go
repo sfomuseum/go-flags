@@ -20,18 +20,16 @@ func Parse(fs *flag.FlagSet) {
 	fs.Parse(args)
 }
 
-func SetFromEnv(fs *flag.FlagSet, prefix string) {
+func SetFlagsFromEnvVars(fs *flag.FlagSet, prefix string) {
 
-	prefix = strings.ToUpper(prefix)
-	prefix = strings.Replace(prefix, "-", "_", -1)
+	prefix = normalize(prefix)
 
 	fs.VisitAll(func(fl *flag.Flag) {
 
 		name := fl.Name
 		env := name
 
-		env = strings.ToUpper(env)
-		env = strings.Replace(env, "-", "_", -1)
+		env = normalize(env)
 		env = fmt.Sprintf("%s_%s", prefix, env)
 
 		val, ok := os.LookupEnv(env)
@@ -40,7 +38,6 @@ func SetFromEnv(fs *flag.FlagSet, prefix string) {
 			log.Printf("set -%s flag (%s) from %s environment variable\n", name, val, env)
 			fs.Set(name, val)
 		}
-
 	})
 }
 
@@ -53,4 +50,14 @@ func NewFlagSet(name string) *flag.FlagSet {
 	}
 
 	return fs
+}
+
+func normalize(raw string) string {
+
+	new := raw
+
+	new = strings.ToUpper(new)
+	new = strings.Replace(new, "-", "_", -1)
+
+	return new
 }
