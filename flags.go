@@ -39,7 +39,7 @@ func SetFlagsFromEnvVarsWithFeedback(fs *flag.FlagSet, prefix string, feedback b
 		val, ok := os.LookupEnv(env)
 
 		if ok && feedback {
-			log.Printf("set -%s flag (%s) from %s environment variable\n", name, val, env)
+			log.Printf("set -%s flag from %s environment variable\n", name, env)
 			fs.Set(name, val)
 		}
 	})
