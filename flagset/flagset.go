@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// Parse command line arguments with a flag.FlagSet instance.
 func Parse(fs *flag.FlagSet) {
 
 	args := os.Args[1:]
@@ -20,10 +21,12 @@ func Parse(fs *flag.FlagSet) {
 	fs.Parse(args)
 }
 
+// Assign values to a flag.FlagSet instance from matching environment variables.
 func SetFlagsFromEnvVars(fs *flag.FlagSet, prefix string) error {
 	return SetFlagsFromEnvVarsWithFeedback(fs, prefix, false)
 }
 
+// Assign values to a flag.FlagSet instance from matching environment variables, optionally logging progress and other feedback.
 func SetFlagsFromEnvVarsWithFeedback(fs *flag.FlagSet, prefix string, feedback bool) error {
 
 	prefix = normalize(prefix)
@@ -51,6 +54,7 @@ func SetFlagsFromEnvVarsWithFeedback(fs *flag.FlagSet, prefix string, feedback b
 	return nil
 }
 
+// Create a new flag.FlagSet instance.
 func NewFlagSet(name string) *flag.FlagSet {
 
 	fs := flag.NewFlagSet(name, flag.ExitOnError)
@@ -62,6 +66,7 @@ func NewFlagSet(name string) *flag.FlagSet {
 	return fs
 }
 
+// Normalize a flag name in to its corresponding environment variable name.
 func normalize(raw string) string {
 
 	new := raw
