@@ -1,3 +1,4 @@
+// package flagset provides methods for working with `flag.FlagSet` instances.
 package flagset
 
 import (
@@ -29,15 +30,10 @@ func SetFlagsFromEnvVars(fs *flag.FlagSet, prefix string) error {
 // Assign values to a flag.FlagSet instance from matching environment variables, optionally logging progress and other feedback.
 func SetFlagsFromEnvVarsWithFeedback(fs *flag.FlagSet, prefix string, feedback bool) error {
 
-	prefix = normalize(prefix)
-
 	fs.VisitAll(func(fl *flag.Flag) {
 
 		name := fl.Name
-		env := name
-
-		env = normalize(env)
-		env = fmt.Sprintf("%s_%s", prefix, env)
+		env := FlagNameToEnvVar(prefix, name)
 
 		val, ok := os.LookupEnv(env)
 
@@ -66,8 +62,19 @@ func NewFlagSet(name string) *flag.FlagSet {
 	return fs
 }
 
-// Normalize a flag name in to its corresponding environment variable name.
-func normalize(raw string) string {
+// FlagNameToEnvVar formats 'name' and 'prefix' in to an environment variable name, used to lookup
+// a value.
+func FlagNameToEnvVar(prefix string, name string) string {
+
+	prefix = normalizeEnvVar(prefix)
+	name = normalizeEnvVar(name)
+
+	return fmt.Sprintf("%s_%s", prefix, name)
+
+}
+
+// normalizeEnvVar normalizes a flag name in to its corresponding environment variable name.
+func normalizeEnvVar(raw string) string {
 
 	new := raw
 
