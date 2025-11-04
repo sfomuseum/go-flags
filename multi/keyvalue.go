@@ -41,6 +41,10 @@ func (e *KeyValueStringFlag) Value() interface{} {
 	return e.value
 }
 
+func (e *KeyValueStringFlag) String() string {
+	return fmt.Sprintf("%s=%s", e.key, e.value)
+}
+
 type KeyValueCSVString []*KeyValueStringFlag
 
 func (e *KeyValueCSVString) String() string {
