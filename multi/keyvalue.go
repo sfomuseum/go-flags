@@ -42,6 +42,11 @@ func (e *KeyValueStringFlag) Value() interface{} {
 }
 
 func (e *KeyValueStringFlag) String() string {
+
+	if e.key == "" {
+		return ""
+	}
+
 	return fmt.Sprintf("%s=%s", e.key, e.value)
 }
 
